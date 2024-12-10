@@ -1,0 +1,272 @@
+## はじめに
+この記事を見てくれた方はこれからクラウドエンジニアになりたい方か、すでにクラウドエンジニアの方がほとんどだと思います。そういう方々がこれから自分の技術領域を広げるために、何を勉強したらいいんだろう？という疑問を持ったとき、1つの指針になればと思って書きました。
+
+:::note info
+この記事の中でそのまま学習に入れるよう、記事の後半にハンズオンものせています。ぜひ活用してみてください。
+:::
+
+### クラウドエンジニアとは
+この記事ではクラウドエンジニアの定義を「AWS、Google Cloud、Azure 等のクラウド技術をメインに扱うエンジニア」とします。インフラエンジニアから少し領域を狭めたものだと思っていただければ、わかりやすいかと思います。
+
+### 5選の選定基準
+ここで選ぶ5選は SIer 企業所属のクラウドエンジニアである私自身の体験や、スタートアップや事業会社の技術スタック、技術ブログや SNS など、自分なりに調査して選出しました。あくまで私なりに導いた選出であると考えてください。傾向として選出は少し開発分野よりになっています。
+
+:::note warn
+セキュリティ、ネットワーク、モニタリング、OS などの技術はインフラエンジニアとして、本記事以前の基礎と考えているため、選定には盛り込んでおりません。
+:::
+
+### 各技術において選出したサービス
+クラウドエンジニアの定義では複数のクラウドをあげていますが、私自身が AWS を扱うことが多いということもあり、クラウドは AWS をメインに選出しました。選出したサービスは一部偏りがあるかもしれませんが、これは本5選の中で体系的に学べることを意識して選出していることも理由です。
+
+## 技術 5選
+本題である5つの技術を紹介します。
+
+1. [IaC](https://qiita.com/hiyanger/items/ff84c71775f6bc36363b#1-iac)
+2. [Git](https://qiita.com/hiyanger/items/ff84c71775f6bc36363b#2-git)
+3. [CI/CD](https://qiita.com/hiyanger/items/ff84c71775f6bc36363b#3-cicd)
+4. [コンテナ](https://qiita.com/hiyanger/items/ff84c71775f6bc36363b#4-%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A)
+5. [サーバレス](https://qiita.com/hiyanger/items/ff84c71775f6bc36363b#5-%E3%82%B5%E3%83%BC%E3%83%90%E3%83%AC%E3%82%B9)
+
+各技術では代表的なサービスも紹介しています。とくにおすすめのサービスには、サービスのうしろに「おすすめ」をつけています。
+
+### 1. IaC
+ Infrastructure as Code です。従来インフラは GUI や CLI でしか操作できませんでしたが、これがプログラミングのようにコードでリソースを作ったりすることができます。中〜大規模のリソースを管理する場合、この IaC という技術はほぼ必須です。メリットとしては以下のような点があげられます。
+
+ - GUI 特有の人的操作ミスを防げる
+ - 環境の複製が容易
+ - バージョン管理ができる（変更履歴が残る）
+
+#### 代表的なサービス
+
+##### Terraform（おすすめ）
+クラウドに依存しないので、さまざまなクラウドで利用できます。数ある IaC の中でもコードが書きやすいです。またデプロイまでの流れも簡単です。CDK より敷居が低く、CloudFormation よりもコードを簡潔に書くことができます。
+
+##### AWS CDK
+プログラミング言語を使ってコードを書いていきます。慣れてる言語を使ってコードをかけるので、柔軟に記述することができます。開発エンジニアの人がよく使ってるイメージです。
+
+##### AWS CloudFormation
+Terraform と同じく宣言型ですが、パラメータを細かく記述する必要があります。CDK は難しいけど、AWS 内でコードを書きたいというケースで使うことが多いかなと思います。ちなみに CDK はこの CloudFormation を土台に稼働しています。また、CDK もそうですが、デプロイがエラーになったときにロールバックしてくれます。
+
+### 2. Git
+ファイルやコードの変更履歴を管理するツールです。過去の状態に戻したり、複数人での作業を効率よく進めたりできます。開発者には必須のツールでしたが、IaC など登場からインフラエンジニアというくくりでもより必要性が増しました。
+
+#### 代表的なサービス
+
+##### GitHub（おすすめ）
+初心者から上級者まで、個人の学習や大規模なチーム開発に広く利用されています。基本、迷ったらこれを使いましょう。
+
+##### GitLab
+GitHubと大きくは変わりませんが、セルフホスティング（自身で構築したサーバに導入可能）が可能など、一部機能が異なります。GitHub で満たせない要件があれば、検討してみるとよいかと思います。
+
+##### Amazon CodeCatalyst
+AWS 版 GitHub です。通常の AWS サービスとは異なり AWS アカウント外である、Builder ID を使って使用します。
+
+### 3. CI/CD
+
+ - CI（継続的インテグレーション）：コードの更新から自動でビルドやテストを行う
+ - CD（継続的デプロイ）：CI の結果をもとに実際の環境にデプロイを行う
+
+開発からリリースまでのプロセスを自動化して効率化する手法です。開発、ビルド、テスト、デプロイはそれぞれ単体で行っていると非常に手間がかかります、これらを自動化、効率化させるのが CI/CD です。
+
+**※参考**
+
+https://qiita.com/choco_p/items/1bd1b106daee1fbd4449
+
+#### 代表的なサービス
+
+##### GitHub Actions（おすすめ）
+GitHub リポジトリ内のイベント（コードのプッシュやプルリクエスト）をトリガーに、ビルド、テスト、デプロイなどを自動化するツールです。 GitHub と簡単に連動できるという観点から、よく使われる CI/CD ツールのひとつです。
+
+##### AWS CodePipeline
+AWS 独自のサービスです。AWS アカウント内で CI/CD を構築する場合はこのサービスを使います。ビルドには CodeBuild、デプロイには CodeDeploy を使います。
+
+##### HCP Terraform
+Terraform 専用の CI/CD ツールです。Terraform の CI/CD パイプライン構築には非常に有用なツールです。なにより Terraform の肝であるステートファイルの管理を行ってくれるところが強みです。
+
+### 4. コンテナ
+アプリケーションはいくつかの要素が連携して動作しますが、動作環境によって挙動が変わる場合があります。例えば、依存するライブラリのバージョンや OS の違いが原因で、エラーが発生したりします。コンテナは、こうした動作環境の違いを解消するための仕組みです。アプリケーションとその依存関係やOSレベルの設定などを1つにパッケージ化して、どの環境でも一貫した動作をさせることができます。
+
+また、仮想マシンのように個別でOSを動かすわけではなく、OS 部分を共有することで、軽量かつ効率的に動作します。コンテナはアプリケーションの動作を分離して管理しやすくし、移植性、スケーラビリティ、効率性を大幅に向上させます。
+
+**※ 参考**
+
+https://qiita.com/shinkai_/items/486f8b75d5904752842e
+
+#### 代表的なサービス
+
+##### Docker
+主な機能として、コンテナイメージの作成・管理、レジストリを通じた共有、環境の一貫性確保、複数コンテナの一括管理、自動化の支援、リソースの効率利用、移植性の向上があります。これにより、開発から運用までを効率化して、環境依存の問題を解消します。
+
+##### Kubernetes
+複数のコンテナを効率的に管理し、自動配置やスケーリング、負荷分散、障害対応を行うオーケストレーションツールです。これにより、アプリケーションの高可用性とスケーラビリティを実現し、開発や運用を効率化します。クラウドネイティブなシステムの基盤として広く使われています。
+
+##### Amazon ECS / EKS（おすすめ）
+AWS でシンプルにコンテナを使うなら ECS、大規模で複雑なシステムなら EKS というイメージです。Kubernetes は Google が開発しているため、Google Cloud での利用もおすすめです。
+
+### 5. サーバレス
+その名の通り、サーバーを持たないシステムのことです。サーバーをもたないということはサーバーを管理することがなくなります。つまり、サーバーのセットアップ、パッチ、スケーリングなどを考慮する必要がありません。「必要なときにだけ動く軽量なコード」と考えればわかりやすいです。
+
+**※ 参考**
+
+https://qiita.com/takanorig/items/3a3a0b43b5be5b4a124f
+
+#### 代表的なサービス
+
+##### AWS Lambda（おすすめ）
+AWS におけるサーバレスのサービスです。特定のイベント（リクエストやデータ変更など）に応じて関数を自動的に実行できます。使用例としては API のバックエンド、データ処理、定期実行タスクなどがあげられます。
+
+:::note warn
+Lambda は動作させるためにコードを記述する必要があります。Lambda でよく使われる言語は Python です。つまりサーバレスに携わるなら、プログラミング言語の習得が必要ということになります。
+:::
+
+# ハンズオン
+ここからは実際にハンズオンを行います。
+
+本ハンズオンは5選で選出したうちの3つである、IaC、Git、CI/CD の３つの技術を使って行います。具体的には AWS リソースを hcl（Terraform 用のコード） で記述し、それを CI/CDツール である HCP Terraform を使ってデプロイします。
+
+:::note warn
+- 事前に GitHub、HCP Terraform、AWS の各アカウントは用意しておいてください
+- Git 操作は VSCode を利用します
+:::
+
+## 動作のイメージ
+1. hcl で S3 を作成するコードを作成
+   
+2. ローカルから feature ブランチへ `push`
+
+3. dev ブランチから main ブランチへ `pull request` / `terraform plan` が動作
+   
+4. `merge` / `terraform apply` が動作、S3 が展開される
+
+![image-1.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/76558f07-02da-4288-c72b-87ee94b34940.png)
+
+## ハンズオン
+
+### 1. リポジトリ作成 / git clone
+① GitHubにてリポジトリを作成します。
+
+![image-2.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/b61378df-1a1e-7375-015f-9de7e8a86751.png)
+
+② リポジトリ作成後、表示された HTTPS の URL をコピーし、VSCode 上で 「Git リポジトリのクローン」から `git clone` します。
+
+<img width="500" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/1944a0c1-862d-dd24-d2fe-a38b9803dab5.png">
+
+### 2. hcl の作成 /  git push
+:::note info
+VSCode には拡張機能である「HashiCorp Terraform」を追加しておきましょう。
+:::
+
+① ファイル `main.tf` を作成します。
+
+② ファイルには下記コードを記載します。
+
+```hcl
+# 変数
+variable "aws_access_key_id" {
+  type = string
+}
+
+variable "aws_secret_access_key" {
+  type = string
+}
+
+# AWSプロバイダー
+provider "aws" {
+  region     = "ap-northeast-1"
+  access_key = var.aws_access_key_id
+  secret_key = var.aws_secret_access_key
+}
+
+# S3バケットを作成
+resource "aws_s3_bucket" "iac_git_cicd" {
+  bucket = "iac-git-cicd-20241201"
+  tags = {
+    Name = "iac-git-cicd-20241201-s3"
+  }
+}
+```
+
+③ git 操作画面から変更のあったファイルを「+」でステージします。
+
+④ コミットメッセージを記入し、「コミットしてプッシュ」します。 
+
+<img width="500" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/8b2da69e-7878-6c08-ae53-04df387ca4eb.png">
+
+⑤ developブランチの作成
+ブランチ作成画面から develop ブランチを作成します。
+
+<img width="500" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/b22668dd-9d29-e1bc-bd67-b4fe7d984a11.png">
+
+### 3-1. HCP Terraform / WorkSpace の作成
+HCP Terraform にログイン後、Default Project に作成します。
+
+① Choose your workflow：Version Control Workflow を選択します。
+② Connect to VCS：GitHub と連携します。
+③ Coose a repository：作成したリポジトリを選択します。
+
+<img width="500" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/f776256c-faf5-3715-716e-6ac57b74920d.png">
+
+### 3-2. HCP Terraform / Variable sets
+HCP Terraform 上の環境変数に AWS クレデンシャルを埋め込みます。
+
+:::note alert
+AWS クレデンシャルは漏洩すると AWS アカウントを自由に使われてしまう危険性があります。取り扱いには注意してください。また、この手順は IAM ロールを使用した OIDC という手法でよりセキュアに動作させる方法があります。実際の本番運用などではこの手法を検討してください。
+:::
+
+① AWS にログイン後、 IAM ユーザーのセキュリティ認証情報からアクセスキーをダウンロードします。ユースケースでは CLI を選択します。
+
+<img width="500" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/48fb3e93-2373-4b2d-529a-d2ae23f6a161.png">
+
+② HCP Terraform に戻り、Variables から aws_access_key_id と aws_secret_access_key を設定します。
+
+![image-7.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/8c5f1bda-1ead-e6aa-dbf5-0524d800a32e.png)
+
+### 3-3. HCP Terraform / 自動 apply の設定
+Settings の General にある Auto-apply で 「Auto-apply API, CLI, & VCS runs」 にチェックをいれて、Save settings します。
+
+![image-8.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/2f9c425a-ee6a-18ac-251b-0217415139ef.png)
+
+### 4. pull request / terraform plan
+
+① GitHub に戻り develop ブランチで readme を作成します。
+
+:::note info
+`pull request` を作成するにはブランチに差分が必要であるため、あえて差分を出すためにこの手順をいれています。
+:::
+
+<img width="500" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/bef1c527-65cd-9288-8499-daad0ea0f8b3.png">
+
+② develop から main へ `pull request` します。
+
+<img width="500" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/fb05a4d1-4c33-a1d5-936c-3ee83a6f3f22.png">
+
+③ HCP Terraform にて `terraform plan` を確認します。（GitHub 上でも plan のレスポンスは確認可能です）
+
+![image-11.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/edc8bf6e-8f04-5604-dcb8-445926201647.png)
+
+### 5. merge / terraform apply
+① `pull request` を `merge` します。
+<img width="500" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/f1e27cdc-c5e5-4d85-4e69-75880bfc59f2.png">
+
+② HCP Terraform にて `terraform apply` を確認します。（同じくGitHub 上でも apply のレスポンスは確認可能です）
+
+![image-13.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/ede8c257-97bd-c24f-0cba-8304828d1735.png)
+
+③ 実際に AWS 環境へ S3 バケットが作成されていることを確認します。
+
+<img width="500" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/984662/47a90d51-bccb-883e-6d79-8e8f722a8ab9.png">
+
+ハンズオンは以上で終了です。
+
+:::note warn
+対象のリソースを削除する場合は、Settings の Destruction and Deletion から Manually destroy を行ってください。（本ハンズオンに限った話であれば、AWS 側で S3 を削除しても問題はありません）
+:::
+
+# さいごに
+改めて本記事での5選をお伝えしておくと、「IaC、Git、CI/CD、コンテナ、サーバレス」です。
+
+エンジニアは技術の移り変わりが激しいです。最新情報をキャッチアップしてこの5選は入れ替わることも考慮しつつ、個人でアップデートいただければと思います。
+
+この5選、余裕なんだけど...? という つよつよ の方がいらっしゃいましたら、サーバレスの箇所でも記述したようにプログラミング言語はもちろん、他には分析、AI などの分野を狙っていくといいかもしれません。すでにご存じだとは思いますが、とくに AI の分野は2024年現在、大盛況です。
+
+最後までお読みいただき、ありがとうございました。この記事の情報やハンズオンが、読んでくださった方のお役にたてれば嬉しいです☺️
